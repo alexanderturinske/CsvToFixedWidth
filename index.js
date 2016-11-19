@@ -3,11 +3,15 @@
  * Author: Alexander James Turinske
  */
 
-function csvParser() {
-}
+const fs = require('fs');
 
-function textFileCreater() {
-}
+const file = fs.readFileSync('temp.csv', 'utf8')
+  .split('\n')
+  .map(function (line) {
+    return line.split(',');
+  });
 
-csvParser();
-textFileCreater();
+// function textFileCreater() {
+// }
+//
+// textFileCreater();
