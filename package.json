@@ -1,0 +1,28 @@
+{
+  "name": "csvtofixedwidth",
+  "version": "1.0.0",
+  "description": "Use node to parse a csv file into a fixed width file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexanderturinske/CsvToFixedWidth.git"
+  },
+  "keywords": [
+    "csv",
+    "fixed",
+    "width",
+    "parse",
+    "convert",
+    "node",
+    "javascript"
+  ],
+  "author": "Alexander James Turinske",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexanderturinske/CsvToFixedWidth/issues"
+  },
+  "homepage": "https://github.com/alexanderturinske/CsvToFixedWidth#readme"
+}
