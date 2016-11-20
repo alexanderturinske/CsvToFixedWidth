@@ -31,4 +31,17 @@ while (file.length >= i + 4) {
   i += 4;
 }
 
+/* TODO Condense column into a single string
+ * Bulk of logic
+ * TODO Join array of strings into a single string
+ * file.map(function (arrayOfStrings) {
+ *   return arrayOfStrings.join('');
+ * });
+ *
+ * TODO Write array of lines to a new file
+ * fs.writeFileSync('output.GACT', 'utf8');
+ *
+ * TODO Allow for user specification of input file location and output file location
+ *
+ */
 console.log(lines);
