@@ -10,15 +10,8 @@ const file = fs.readFileSync('temp.csv', 'utf8')
   .map(function (line) {
     return line.split(',');
   });
-/*
- * File format:
- * column name
- * width
- * pl or pr
- * data
- */
 
-const lines = [];
+const unprocessedLines = [];
 let line = [];
 let i = 0
 
@@ -27,12 +20,38 @@ while (file.length >= i + 4) {
   file[i].forEach(function (value, index) {
     line.push([file[i][index], file[i + 1][index], file[i + 2][index], file[i + 3][index]]);
   });
-  lines.push(line);
+  unprocessedLines.push(line);
   i += 4;
 }
-
-/* TODO Condense column into a single string
+/*
+ *
+ * File format: column name, width, pl or pr, filler, data
+lines =
+[
+  [ [ 'one', '1', 'pl', '0', 'B' ],[ 'two', '2', 'pl', '', '1' ], [ 'three', '5', 'pr', '0', '1234' ]],
+  [ [ 'one', '2', 'pl', 'BA' ], [ 'two', '5', 'pl', 'Test' ], [ 'three', '4', 'pr', 'a' ] ]
+]
+ * TODO Condense column into a single string
  * Bulk of logic
+ */
+const processedLines = unprocessedLines.map(function (lineData) {
+  return lineData.reduce(function (currentLine, columnData) {
+    const width = Math.abs(columnData[1]);
+    const padding = ['pl', 'pr'].indexOf(columnData[2].toLowerCase()) > 0 ? columnData[2].toLowerCase() : 'pl';
+    const filler = columnData[3] !== '' ? stringConversion(columnData[3]) : ' ';
+    const data = stringConversion(columnData[4]);
+    if (data.length < width) {
+      if (padding === 'pl') {
+        return createFiller(filler, data, width) + data + currentLine;
+      } else {
+        return data + createFiller(filler, data, width) + currentLine;
+      }
+    } else if (data.length > width) {
+      return data.substring(0, width) + currentLine;
+    }
+  }, '');
+});
+/*
  * TODO Join array of strings into a single string
  * file.map(function (arrayOfStrings) {
  *   return arrayOfStrings.join('');
@@ -44,4 +63,17 @@ while (file.length >= i + 4) {
  * TODO Allow for user specification of input file location and output file location
  *
  */
-console.log(lines);
+function stringConversion(value) {
+  console.log(value);
+  return typeof value === 'string' ? value : value.toString();
+}
+function createFiller(filler, data, width) {
+  var resultString = '';
+  for (let i = 0; i < width - data.length; i++) {
+    resultString += filler;
+  }
+  return resultString;
+}
+
+console.log(unprocessedLines);
+console.log(processedLines);
