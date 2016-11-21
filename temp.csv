@@ -1,10 +1,10 @@
 one,two,three,four,five
 1,2,5,4,1
 pl,pl,pr,pl,pr
-'0','0','0','','0'
+0,0,0,,0
 B,1,1234,,X
 one,two,three,four,five
 2,5,4,1,1
 pl,pl,pr,pl,pr
-'1','1','1',,'1'
+1,1,1,,1
 BA,Test,a,,X
