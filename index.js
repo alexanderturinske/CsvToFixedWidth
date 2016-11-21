@@ -30,7 +30,7 @@ const processedLines = unprocessedLines.map(function (lineData) {
     currentLine = currentLine === void 0 ? '' : currentLine;
     const width = Math.abs(columnData[1]);
     const padding = ['pl', 'pr'].indexOf(columnData[2].toLowerCase()) > 0 ? columnData[2].toLowerCase() : 'pl';
-    const filler = columnData[3] !== void 0 ? stringConversion(columnData[3]) : ' ';
+    const filler = columnData[3] !== '' ? stringConversion(columnData[3]) : ' ';
     const data = stringConversion(columnData[4]);
     if (data.length <= width) {
       if (padding === 'pl') {
@@ -44,9 +44,8 @@ const processedLines = unprocessedLines.map(function (lineData) {
   }, '');
 });
 
-fs.writeFileSync('output.GACT', createFileText(processedLines), 'utf8', function (err) {
+fs.writeFile('output.GACT', createFileText(processedLines), 'utf8', function (err) {
   if (err) throw err;
-  console.log('The file has been created!');
 });
 
 /*
@@ -55,7 +54,7 @@ fs.writeFileSync('output.GACT', createFileText(processedLines), 'utf8', function
  */
 
 function createFileText(data) {
-  return data.join('\n');
+  return data.join('\r\n');
 }
 
 function createFiller(filler, data, width) {
@@ -69,6 +68,3 @@ function createFiller(filler, data, width) {
 function stringConversion(value) {
   return typeof value === 'string' ? value : value.toString();
 }
-
-console.log('pre', unprocessedLines);
-console.log('post', processedLines);
