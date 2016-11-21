@@ -15,13 +15,13 @@ const unprocessedLines = [];
 let line = [];
 let i = 0
 
-while (file.length >= i + 4) {
+while (file.length >= i + 5) {
   line = [];
   file[i].forEach(function (value, index) {
-    line.push([file[i][index], file[i + 1][index], file[i + 2][index], file[i + 3][index]]);
+    line.push([file[i][index], file[i + 1][index], file[i + 2][index], file[i + 3][index], file[i + 4][index]]);
   });
   unprocessedLines.push(line);
-  i += 4;
+  i += 5;
 }
 /*
  *
@@ -38,7 +38,7 @@ const processedLines = unprocessedLines.map(function (lineData) {
   return lineData.reduce(function (currentLine, columnData) {
     const width = Math.abs(columnData[1]);
     const padding = ['pl', 'pr'].indexOf(columnData[2].toLowerCase()) > 0 ? columnData[2].toLowerCase() : 'pl';
-    const filler = columnData[3] !== '' ? stringConversion(columnData[3]) : ' ';
+    const filler = columnData[3] !== void 0 ? stringConversion(columnData[3]) : ' ';
     const data = stringConversion(columnData[4]);
     if (data.length < width) {
       if (padding === 'pl') {
@@ -64,7 +64,6 @@ const processedLines = unprocessedLines.map(function (lineData) {
  *
  */
 function stringConversion(value) {
-  console.log(value);
   return typeof value === 'string' ? value : value.toString();
 }
 function createFiller(filler, data, width) {
@@ -75,5 +74,5 @@ function createFiller(filler, data, width) {
   return resultString;
 }
 
-console.log(unprocessedLines);
-console.log(processedLines);
+console.log('pre', unprocessedLines);
+console.log('post', processedLines);
