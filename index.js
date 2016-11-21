@@ -2,14 +2,13 @@
  * CsvToFixedWidth
  * Author: Alexander James Turinske
  */
+
 const fs = require('fs');
 const readline = require('readline');
-
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
-
 let output;
 
 rl.question('Location of .csv? ', (inputFilePath) => {
