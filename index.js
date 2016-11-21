@@ -7,14 +7,14 @@ const readline = require('readline');
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 let output;
 
-rl.question('Location of .csv? ', function (inputFilePath) {
+rl.question('Location of .csv? ', (inputFilePath) => {
   output = processLines(parseColumns(parseInput(inputFilePath)));
-  rl.question('Target Location of output file? ', function (outputFilePath) {
+  rl.question('Target Location of output file? ', outputFilePath => {
     rl.close();
     writeFile(outputFilePath, output);
   });
@@ -23,9 +23,9 @@ rl.question('Location of .csv? ', function (inputFilePath) {
 function parseInput(inputFilePath) {
   return fs.readFileSync(inputFilePath, 'utf8')
     .split('\n')
-    .map(function (line) {
-      return line.split(',');
-    });
+    .map(line =>
+      line.split(',')
+    );
 }
 
 function parseColumns(file) {
@@ -36,7 +36,7 @@ function parseColumns(file) {
   // TODO make below function cleaner and more efficient
   while (file.length >= i + 5) {
     line = [];
-    file[i].forEach(function (value, index) {
+    file[i].forEach((value, index) => {
       line.push([file[i][index], file[i + 1][index], file[i + 2][index], file[i + 3][index], file[i + 4][index]]);
     });
     unprocessedLines.push(line);
@@ -46,8 +46,8 @@ function parseColumns(file) {
 }
 
 function processLines(unprocessedLines) {
-  return unprocessedLines.map(function (lineData) {
-    return lineData.reduce(function (currentLine, columnData) {
+  return unprocessedLines.map(lineData =>
+    lineData.reduce((currentLine, columnData) => {
       currentLine = currentLine === void 0 ? '' : currentLine;
       const width = Math.abs(columnData[1]);
       const padding = ['pl', 'pr'].indexOf(columnData[2].toLowerCase()) > 0 ? columnData[2].toLowerCase() : 'pl';
@@ -62,13 +62,14 @@ function processLines(unprocessedLines) {
       } else if (data.length > width) {
         return currentLine + data.substring(0, width);
       }
-    }, '');
-  });
+    }, '')
+  );
 }
 
 function writeFile(outputFilePath, processedLines) {
-  fs.writeFile(outputFilePath, createFileText(processedLines), 'utf8', function (err) {
+  fs.writeFile(outputFilePath, createFileText(processedLines), 'utf8', err => {
     if (err) throw err;
+    console.log('Your file is saved!');
   });
 }
 
