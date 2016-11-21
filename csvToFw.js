@@ -11,9 +11,9 @@ const rl = readline.createInterface({
 });
 let output;
 
-rl.question('Location of .csv? ', (inputFilePath) => {
+rl.question('Path to .csv from the current directory? ', (inputFilePath) => {
   output = processLines(parseColumns(parseInput(inputFilePath)));
-  rl.question('Target Location of output file? ', outputFilePath => {
+  rl.question('Target path of output file from the current directory? ', outputFilePath => {
     rl.close();
     writeFile(outputFilePath, output);
   });
@@ -68,7 +68,7 @@ function processLines(unprocessedLines) {
 function writeFile(outputFilePath, processedLines) {
   fs.writeFile(outputFilePath, createFileText(processedLines), 'utf8', err => {
     if (err) throw err;
-    console.log('Your file is saved!');
+    console.log('Your file has been saved!');
   });
 }
 
