@@ -2,56 +2,75 @@
  * CsvToFixedWidth
  * Author: Alexander James Turinske
  */
-
 const fs = require('fs');
+const readline = require('readline');
 
-const file = fs.readFileSync('temp.csv', 'utf8')
-  .split('\n')
-  .map(function (line) {
-    return line.split(',');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+let output;
+
+rl.question('Location of .csv? ', function (inputFilePath) {
+  output = processLines(parseColumns(parseInput(inputFilePath)));
+  rl.question('Target Location of output file? ', function (outputFilePath) {
+    rl.close();
+    writeFile(outputFilePath, output);
   });
+});
 
-const unprocessedLines = [];
-let line = [];
-let i = 0
-
-// TODO make below function cleaner and more efficient
-while (file.length >= i + 5) {
-  line = [];
-  file[i].forEach(function (value, index) {
-    line.push([file[i][index], file[i + 1][index], file[i + 2][index], file[i + 3][index], file[i + 4][index]]);
-  });
-  unprocessedLines.push(line);
-  i += 5;
+function parseInput(inputFilePath) {
+  return fs.readFileSync(inputFilePath, 'utf8')
+    .split('\n')
+    .map(function (line) {
+      return line.split(',');
+    });
 }
 
-const processedLines = unprocessedLines.map(function (lineData) {
-  return lineData.reduce(function (currentLine, columnData) {
-    currentLine = currentLine === void 0 ? '' : currentLine;
-    const width = Math.abs(columnData[1]);
-    const padding = ['pl', 'pr'].indexOf(columnData[2].toLowerCase()) > 0 ? columnData[2].toLowerCase() : 'pl';
-    const filler = columnData[3] !== '' ? stringConversion(columnData[3]) : ' ';
-    const data = stringConversion(columnData[4]);
-    if (data.length <= width) {
-      if (padding === 'pl') {
-        return currentLine + createFiller(filler, data, width) + data;
-      } else {
-        return currentLine + data + createFiller(filler, data, width);
+function parseColumns(file) {
+  const unprocessedLines = [];
+  let line = [];
+  let i = 0
+
+  // TODO make below function cleaner and more efficient
+  while (file.length >= i + 5) {
+    line = [];
+    file[i].forEach(function (value, index) {
+      line.push([file[i][index], file[i + 1][index], file[i + 2][index], file[i + 3][index], file[i + 4][index]]);
+    });
+    unprocessedLines.push(line);
+    i += 5;
+  }
+  return unprocessedLines;
+}
+
+function processLines(unprocessedLines) {
+  return unprocessedLines.map(function (lineData) {
+    return lineData.reduce(function (currentLine, columnData) {
+      currentLine = currentLine === void 0 ? '' : currentLine;
+      const width = Math.abs(columnData[1]);
+      const padding = ['pl', 'pr'].indexOf(columnData[2].toLowerCase()) > 0 ? columnData[2].toLowerCase() : 'pl';
+      const filler = columnData[3] !== '' ? stringConversion(columnData[3]) : ' ';
+      const data = stringConversion(columnData[4]);
+      if (data.length <= width) {
+        if (padding === 'pl') {
+          return currentLine + createFiller(filler, data, width) + data;
+        } else {
+          return currentLine + data + createFiller(filler, data, width);
+        }
+      } else if (data.length > width) {
+        return currentLine + data.substring(0, width);
       }
-    } else if (data.length > width) {
-      return currentLine + data.substring(0, width);
-    }
-  }, '');
-});
+    }, '');
+  });
+}
 
-fs.writeFile('output.GACT', createFileText(processedLines), 'utf8', function (err) {
-  if (err) throw err;
-});
-
-/*
- * TODO Allow for user specification of input file location and output file location
- *
- */
+function writeFile(outputFilePath, processedLines) {
+  fs.writeFile(outputFilePath, createFileText(processedLines), 'utf8', function (err) {
+    if (err) throw err;
+  });
+}
 
 function createFileText(data) {
   return data.join('\r\n');
