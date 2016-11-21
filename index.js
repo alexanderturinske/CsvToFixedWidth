@@ -15,6 +15,7 @@ const unprocessedLines = [];
 let line = [];
 let i = 0
 
+// TODO make below function cleaner and more efficient
 while (file.length >= i + 5) {
   line = [];
   file[i].forEach(function (value, index) {
@@ -36,18 +37,19 @@ lines =
  */
 const processedLines = unprocessedLines.map(function (lineData) {
   return lineData.reduce(function (currentLine, columnData) {
+    currentLine = currentLine === void 0 ? '' : currentLine;
     const width = Math.abs(columnData[1]);
     const padding = ['pl', 'pr'].indexOf(columnData[2].toLowerCase()) > 0 ? columnData[2].toLowerCase() : 'pl';
     const filler = columnData[3] !== void 0 ? stringConversion(columnData[3]) : ' ';
     const data = stringConversion(columnData[4]);
-    if (data.length < width) {
+    if (data.length <= width) {
       if (padding === 'pl') {
-        return createFiller(filler, data, width) + data + currentLine;
+        return currentLine + createFiller(filler, data, width) + data;
       } else {
-        return data + createFiller(filler, data, width) + currentLine;
+        return currentLine + data + createFiller(filler, data, width);
       }
     } else if (data.length > width) {
-      return data.substring(0, width) + currentLine;
+      return currentLine + data.substring(0, width);
     }
   }, '');
 });
