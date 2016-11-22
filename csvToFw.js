@@ -35,7 +35,7 @@ function parseColumns(file) {
   while (file.length >= i + 5) {
     line = [];
     let j = 0;
-    while (file[i][j] !== '') {
+    while (file[i][j] !== '' && file[i][j] !== void 0) {
       line.push([file[i][j], file[i + 1][j], file[i + 2][j], file[i + 3][j], file[i + 4][j]]);
       j++;
     }
@@ -49,6 +49,7 @@ function processLines(unprocessedLines) {
   return unprocessedLines.map(lineData =>
     lineData.reduce((currentLine, columnData) => {
       currentLine = currentLine === void 0 ? '' : currentLine;
+      console.log(columnData);
       const width = Math.abs(columnData[1]);
       const padding = ['pl', 'pr'].indexOf(columnData[2].toLowerCase()) > 0 ? columnData[2].toLowerCase() : 'pl';
       const filler = columnData[3] !== '' ? stringConversion(columnData[3]) : ' ';
