@@ -46,15 +46,15 @@ Sample CSV file input
 ![Sample CSV file](http://i.imgur.com/vx1bPOy.png)
 
 ```
-one,two,three,four,five
-1,2,5,4,1
-pl,pl,pr,pl,pr
-0,0,0,,0
-B,1,1234,,X
-one,two,three,four,five
-2,5,4,1,1
-pl,pl,pr,pl,pr
-1,1,1,,1
+one,two,three,four,five\r\n
+1,2,5,4,1\r\n
+pl,pl,pr,pl,pr\r\n
+0,0,0,,0\r\n
+B,1,1234,,X\r\n
+one,two,three,four,five\r\n
+2,5,4,1,1\r\n
+pl,pl,pr,pl,pr\r\n
+1,1,1,,1\r\n
 BA,Test,a,,X
 ```
 
@@ -67,12 +67,15 @@ BA1Testa111 X
 
 ### CSV Row format
 Given n is an integer greater than zero
-- Row 4n: header for data, not used
+- Row 4n: header for data
+ - placeholder row
+ - required
 - Row 4n + 1: width of the column
  - required
 - Row 4n + 2: padding side for the column
- - pl = padding left (default)
+ - pl = padding left
  - pr = padding right
+ - required
 - Row 4n + 2: filler
  - if your data doesn't take up the whole row, this character will be used as a filler
  - default: single space
