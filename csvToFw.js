@@ -21,7 +21,7 @@ rl.question('Path to .csv from the current directory? ', (inputFilePath) => {
 
 function parseInput(inputFilePath) {
   return fs.readFileSync(inputFilePath, 'utf8')
-    .split('\n')
+    .split('\r\n')
     .map(line =>
       line.split(',')
     );
