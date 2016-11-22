@@ -26,7 +26,6 @@ function parseInput(inputFilePath) {
       line.split(',')
     );
 }
-
 function parseColumns(file) {
   const unprocessedLines = [];
   let line = [];
@@ -35,9 +34,11 @@ function parseColumns(file) {
   // TODO make below function cleaner and more efficient
   while (file.length >= i + 5) {
     line = [];
-    file[i].forEach((value, index) => {
-      line.push([file[i][index], file[i + 1][index], file[i + 2][index], file[i + 3][index], file[i + 4][index]]);
-    });
+    let j = 0;
+    while (file[i][j] !== '') {
+      line.push([file[i][j], file[i + 1][j], file[i + 2][j], file[i + 3][j], file[i + 4][j]]);
+      j++;
+    }
     unprocessedLines.push(line);
     i += 5;
   }
