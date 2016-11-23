@@ -49,7 +49,6 @@ function processLines(unprocessedLines) {
   return unprocessedLines.map(lineData =>
     lineData.reduce((currentLine, columnData) => {
       currentLine = currentLine === void 0 ? '' : currentLine;
-      console.log(columnData);
       const width = Math.abs(columnData[1]);
       const padding = ['pl', 'pr'].indexOf(columnData[2].toLowerCase()) > 0 ? columnData[2].toLowerCase() : 'pl';
       const filler = columnData[3] !== '' ? stringConversion(columnData[3]) : ' ';
